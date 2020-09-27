@@ -4,7 +4,13 @@ import './App.css';
 
 function App() {
   const [
-    { circles, contextMenuOpen, selectedCircleIndex },
+    {
+      circles,
+      contextMenuOpen,
+      selectedCircleIndex,
+      pastCircles,
+      futureCircles,
+    },
     dispatch,
   ] = useReducer(reducer, initialState);
 
@@ -16,6 +22,19 @@ function App() {
     <main className="App">
       <header>
         <h1>Circle Drawer</h1>
+
+        <button
+          onClick={() => dispatch({ type: 'UNDO' })}
+          disabled={pastCircles.length === 0}
+        >
+          Undo
+        </button>
+        <button
+          onClick={() => dispatch({ type: 'REDO' })}
+          disabled={futureCircles.length === 0}
+        >
+          Redo
+        </button>
       </header>
 
       <section
