@@ -39,6 +39,7 @@ button {
 
 button:disabled {
   opacity: 0.5;
+  cursor: initial;
 }
 
 .circle {
@@ -53,4 +54,16 @@ button:disabled {
   background-color: rgba(0, 0, 0, 0.5);
   border-radius: 6px;
   padding: 20px;
+}
+
+@media screen and (max-width: 500px) {
+  h1 {
+    margin: 10px 0;
+    font-size: 16px;
+  }
+
+  h1,
+  button {
+    font-size: 16px;
+  }
 }
