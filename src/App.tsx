@@ -75,6 +75,7 @@ function App() {
               left: 0,
             }}
             onClick={(event) => {
+              // clicking menu shouldn't trigger a board click
               event.stopPropagation();
 
               dispatch({ type: 'CLOSE_CONTEXT_MENU' });
@@ -102,12 +103,12 @@ function App() {
                 max={500}
                 value={selectedCircle.diameter}
                 step={1}
-                onChange={(event) => {
+                onChange={(event) =>
                   dispatch({
                     type: 'CHANGE_DIAMETER',
                     diameter: parseFloat(event.target.value),
-                  });
-                }}
+                  })
+                }
               />
 
               <button onClick={() => dispatch({ type: 'CLOSE_CONTEXT_MENU' })}>
