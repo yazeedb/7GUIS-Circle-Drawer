@@ -3,13 +3,18 @@
   background-color: #282c34;
   min-height: 100vh;
   color: white;
+}
+
+header {
+  background-color: black;
   padding: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1;
 }
 
 h1 {
   margin: 0;
-}
-
-.circle:hover {
-  background-color: gray;
 }
