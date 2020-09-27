@@ -1,20 +1,56 @@
-.App {
+main {
   text-align: center;
-  background-color: #282c34;
+  background-color: #1c1c1c;
   min-height: 100vh;
   color: white;
 }
 
 header {
-  background-color: black;
+  background-color: #1c1c1c;
   padding: 20px;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 1;
+  border-bottom: 1px solid #ababab;
+  display: flex;
+  align-items: center;
+}
+
+header button {
+  margin: 10px 15px;
 }
 
 h1 {
   margin: 0;
+}
+
+button {
+  background-color: #08746c;
+  color: #f2f2f2;
+  border: 0;
+  border-radius: 6px;
+  padding: 8px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+}
+
+.circle {
+  border-radius: 50%;
+  border: 1px solid #ababab;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+
+.diameter-popup {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 6px;
+  padding: 20px;
 }

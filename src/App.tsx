@@ -11,7 +11,7 @@ function App() {
   const boardRef = useRef<HTMLElement>(null);
 
   return (
-    <main className="App">
+    <main>
       <header>
         <h1>Circle Drawer</h1>
 
@@ -57,15 +57,11 @@ function App() {
               key={index.toString()}
               className="circle"
               style={{
-                borderRadius: '50%',
-                border: '1px solid white',
                 width: circleToUse.diameter,
                 height: circleToUse.diameter,
                 position: 'absolute',
                 left: circleToUse.x,
                 top: circleToUse.y,
-                transform: 'translate(-50%, -50%)',
-                cursor: 'pointer',
               }}
               onClick={(event) => {
                 // clicking a circle shouldn't trigger a board click
@@ -98,13 +94,10 @@ function App() {
         >
           <div
             style={{
-              position: 'absolute',
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
               left: selectedCircle.x,
               top: selectedCircle.y,
-              width: 400,
-              height: 120,
             }}
+            className="diameter-popup"
             onClick={(event) => event.stopPropagation()}
           >
             <h3>
@@ -125,10 +118,6 @@ function App() {
                 })
               }
             />
-
-            <button onClick={() => dispatch({ type: 'CLOSE_CONTEXT_MENU' })}>
-              Close
-            </button>
           </div>
         </div>
       )}
