@@ -4,19 +4,11 @@ import './App.css';
 
 function App() {
   const [
-    {
-      circles,
-      contextMenuOpen,
-      selectedCircleIndex,
-      pastCircles,
-      futureCircles,
-    },
+    { circles, contextMenuOpen, selectedCircle, pastCircles, futureCircles },
     dispatch,
   ] = useReducer(reducer, initialState);
 
   const boardRef = useRef<HTMLElement>(null);
-
-  const selectedCircle = circles[selectedCircleIndex];
 
   return (
     <main className="App">
@@ -57,86 +49,89 @@ function App() {
           });
         }}
       >
-        {circles.map((c, index) => (
-          <div
-            key={index.toString()}
-            className="circle"
-            style={{
-              borderRadius: '50%',
-              border: '1px solid white',
-              width: c.diameter,
-              height: c.diameter,
-              position: 'absolute',
-              left: c.x,
-              top: c.y,
-              transform: 'translate(-50%, -50%)',
-              cursor: 'pointer',
-            }}
-            onClick={(event) => {
-              // clicking a circle shouldn't trigger a board click
-              event.stopPropagation();
+        {circles.map((c, index) => {
+          const circleToUse = c.id === selectedCircle.id ? selectedCircle : c;
 
-              dispatch({
-                type: 'OPEN_CONTEXT_MENU',
-                index,
-              });
-            }}
-          />
-        ))}
-
-        {contextMenuOpen && (
-          <div
-            style={{
-              position: 'fixed',
-              width: '100%',
-              height: '100%',
-              top: 0,
-              left: 0,
-            }}
-            onClick={(event) => {
-              // clicking menu shouldn't trigger a board click
-              event.stopPropagation();
-
-              dispatch({ type: 'CLOSE_CONTEXT_MENU' });
-            }}
-          >
+          return (
             <div
+              key={index.toString()}
+              className="circle"
               style={{
+                borderRadius: '50%',
+                border: '1px solid white',
+                width: circleToUse.diameter,
+                height: circleToUse.diameter,
                 position: 'absolute',
-                backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                left: selectedCircle.x,
-                top: selectedCircle.y,
-                width: 400,
-                height: 120,
+                left: circleToUse.x,
+                top: circleToUse.y,
+                transform: 'translate(-50%, -50%)',
+                cursor: 'pointer',
               }}
-              onClick={(event) => event.stopPropagation()}
-            >
-              <h3>
-                Adjust diameter of circle at ({selectedCircle.x},{' '}
-                {selectedCircle.y})
-              </h3>
+              onClick={(event) => {
+                // clicking a circle shouldn't trigger a board click
+                event.stopPropagation();
 
-              <input
-                type="range"
-                min={5}
-                max={500}
-                value={selectedCircle.diameter}
-                step={1}
-                onChange={(event) =>
-                  dispatch({
-                    type: 'CHANGE_DIAMETER',
-                    diameter: parseFloat(event.target.value),
-                  })
-                }
-              />
-
-              <button onClick={() => dispatch({ type: 'CLOSE_CONTEXT_MENU' })}>
-                Close
-              </button>
-            </div>
-          </div>
-        )}
+                dispatch({
+                  type: 'OPEN_CONTEXT_MENU',
+                  circle: c,
+                });
+              }}
+            />
+          );
+        })}
       </section>
+      {contextMenuOpen && (
+        <div
+          style={{
+            position: 'fixed',
+            width: '100%',
+            height: '100%',
+            top: 0,
+            left: 0,
+          }}
+          onClick={(event) => {
+            // clicking menu shouldn't trigger a board click
+            event.stopPropagation();
+
+            dispatch({ type: 'CLOSE_CONTEXT_MENU' });
+          }}
+        >
+          <div
+            style={{
+              position: 'absolute',
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              left: selectedCircle.x,
+              top: selectedCircle.y,
+              width: 400,
+              height: 120,
+            }}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <h3>
+              Adjust diameter of circle at ({selectedCircle.x},{' '}
+              {selectedCircle.y})
+            </h3>
+
+            <input
+              type="range"
+              min={5}
+              max={500}
+              value={selectedCircle.diameter}
+              step={1}
+              onChange={(event) =>
+                dispatch({
+                  type: 'CHANGE_DIAMETER',
+                  diameter: parseFloat(event.target.value),
+                })
+              }
+            />
+
+            <button onClick={() => dispatch({ type: 'CLOSE_CONTEXT_MENU' })}>
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
