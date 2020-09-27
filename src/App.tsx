@@ -49,12 +49,12 @@ function App() {
           });
         }}
       >
-        {circles.map((c, index) => {
+        {circles.map((c) => {
           const circleToUse = c.id === selectedCircle.id ? selectedCircle : c;
 
           return (
             <div
-              key={index.toString()}
+              key={c.id}
               className="circle"
               style={{
                 width: circleToUse.diameter,
