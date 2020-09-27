@@ -1,7 +1,6 @@
 import React, { useReducer, useRef } from 'react';
 import { reducer, initialState } from './state';
 import './App.css';
-import { eventNames } from 'process';
 
 function App() {
   const [
@@ -102,6 +101,7 @@ function App() {
                 min={5}
                 max={500}
                 value={selectedCircle.diameter}
+                step={1}
                 onChange={(event) => {
                   dispatch({
                     type: 'CHANGE_DIAMETER',
