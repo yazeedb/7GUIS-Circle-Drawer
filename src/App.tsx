@@ -31,10 +31,6 @@ function App() {
 
       <section
         ref={boardRef}
-        style={{
-          height: '100vh',
-          position: 'relative',
-        }}
         onClick={({ pageX, pageY }) => {
           if (!boardRef.current) {
             return;
@@ -59,7 +55,6 @@ function App() {
               style={{
                 width: circleToUse.diameter,
                 height: circleToUse.diameter,
-                position: 'absolute',
                 left: circleToUse.x,
                 top: circleToUse.y,
               }}
@@ -78,13 +73,7 @@ function App() {
       </section>
       {contextMenuOpen && (
         <div
-          style={{
-            position: 'fixed',
-            width: '100%',
-            height: '100%',
-            top: 0,
-            left: 0,
-          }}
+          className="backdrop"
           onClick={(event) => {
             // clicking menu shouldn't trigger a board click
             event.stopPropagation();
@@ -97,7 +86,7 @@ function App() {
               left: selectedCircle.x,
               top: selectedCircle.y,
             }}
-            className="diameter-popup"
+            className="menu"
             onClick={(event) => event.stopPropagation()}
           >
             <h3>
