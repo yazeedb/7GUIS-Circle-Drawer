@@ -28,7 +28,7 @@ function App() {
     return () => {
       document.removeEventListener('mousemove', listener);
     };
-  }, [JSON.stringify(circles)]);
+  }, [listener]);
 
   return (
     <main>

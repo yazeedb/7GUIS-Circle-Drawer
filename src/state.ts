@@ -96,10 +96,6 @@ export const reducer = (state: State, action: Action): State => {
       };
 
     case 'CHANGE_DIAMETER':
-      if (selectedCircle === null) {
-        return state;
-      }
-
       return {
         ...state,
         selectedCircle: {
