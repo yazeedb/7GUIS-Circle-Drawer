@@ -1,6 +1,6 @@
 let globalId = 0;
 
-type Circle = {
+export type Circle = {
   id: number;
   diameter: number;
   x: number;
@@ -9,7 +9,9 @@ type Circle = {
 
 export type Action =
   | { type: 'DRAW_CIRCLE'; x: number; y: number }
-  | { type: 'OPEN_CONTEXT_MENU'; circle: Circle }
+  | { type: 'SELECT_CIRCLE'; circle: Circle }
+  | { type: 'CLEAR_SELECTION' }
+  | { type: 'OPEN_CONTEXT_MENU' }
   | { type: 'CLOSE_CONTEXT_MENU' }
   | { type: 'CHANGE_DIAMETER'; diameter: number }
   | { type: 'UNDO' }
@@ -34,6 +36,14 @@ export const initialState: State = {
 export const reducer = (state: State, action: Action): State => {
   const { pastCircles, futureCircles, circles, selectedCircle } = state;
 
+  if (
+    state.contextMenuOpen &&
+    action.type !== 'CHANGE_DIAMETER' &&
+    action.type !== 'CLOSE_CONTEXT_MENU'
+  ) {
+    return state;
+  }
+
   switch (action.type) {
     case 'DRAW_CIRCLE': {
       const { x, y } = action;
@@ -49,8 +59,23 @@ export const reducer = (state: State, action: Action): State => {
     case 'OPEN_CONTEXT_MENU':
       return {
         ...state,
-        selectedCircle: action.circle,
         contextMenuOpen: true,
+      };
+
+    case 'SELECT_CIRCLE':
+      return {
+        ...state,
+        selectedCircle: action.circle,
+      };
+
+    case 'CLEAR_SELECTION':
+      if (state.contextMenuOpen) {
+        return state;
+      }
+
+      return {
+        ...state,
+        selectedCircle: initialState.selectedCircle,
       };
 
     case 'CLOSE_CONTEXT_MENU':

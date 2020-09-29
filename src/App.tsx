@@ -1,5 +1,5 @@
-import React, { useReducer, useRef } from 'react';
-import { reducer, initialState } from './state';
+import React, { useEffect, useReducer, useRef } from 'react';
+import { reducer, initialState, Circle } from './state';
 import './App.css';
 
 function App() {
@@ -9,6 +9,26 @@ function App() {
   ] = useReducer(reducer, initialState);
 
   const boardRef = useRef<HTMLElement>(null);
+
+  const listener = ({ pageX, pageY }: MouseEvent) => {
+    const closest = getClosest(pageX, pageY, circles);
+
+    if (!closest) {
+      dispatch({ type: 'CLEAR_SELECTION' });
+
+      return;
+    }
+
+    dispatch({ type: 'SELECT_CIRCLE', circle: closest });
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousemove', listener);
+
+    return () => {
+      document.removeEventListener('mousemove', listener);
+    };
+  }, [JSON.stringify(circles)]);
 
   return (
     <main>
@@ -46,12 +66,14 @@ function App() {
         }}
       >
         {circles.map((c) => {
-          const circleToUse = c.id === selectedCircle.id ? selectedCircle : c;
+          const isSelected = c.id === selectedCircle.id;
+          const circleToUse = isSelected ? selectedCircle : c;
 
           return (
             <div
               key={c.id}
               className="circle"
+              data-selected={isSelected}
               style={{
                 width: circleToUse.diameter,
                 height: circleToUse.diameter,
@@ -64,7 +86,6 @@ function App() {
 
                 dispatch({
                   type: 'OPEN_CONTEXT_MENU',
-                  circle: c,
                 });
               }}
             />
@@ -113,5 +134,34 @@ function App() {
     </main>
   );
 }
+
+const distanceBetween2Points = (
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number
+) => {
+  const { sqrt, pow } = Math;
+
+  // √((x_2-x_1)²+(y_2-y_1)²)
+  return sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2));
+};
+
+const getClosest = (x: number, y: number, circles: Circle[]) => {
+  let closest;
+  let minDistance = Number.MAX_VALUE;
+
+  circles.forEach((c) => {
+    const distance = distanceBetween2Points(x, y, c.x, c.y);
+    const radius = c.diameter / 2;
+
+    if (distance <= radius && distance < minDistance) {
+      closest = c;
+      minDistance = distance;
+    }
+  });
+
+  return closest;
+};
 
 export default App;
