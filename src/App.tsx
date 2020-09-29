@@ -15,11 +15,9 @@ function App() {
 
     if (!closest) {
       dispatch({ type: 'CLEAR_SELECTION' });
-
-      return;
+    } else {
+      dispatch({ type: 'SELECT_CIRCLE', circle: closest });
     }
-
-    dispatch({ type: 'SELECT_CIRCLE', circle: closest });
   };
 
   useEffect(() => {
