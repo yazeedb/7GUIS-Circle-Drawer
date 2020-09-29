@@ -13,10 +13,10 @@ function App() {
   const listener = ({ pageX, pageY }: MouseEvent) => {
     const closest = getClosest(pageX, pageY, circles);
 
-    if (!closest) {
-      dispatch({ type: 'CLEAR_SELECTION' });
-    } else {
+    if (closest) {
       dispatch({ type: 'SELECT_CIRCLE', circle: closest });
+    } else {
+      dispatch({ type: 'CLEAR_SELECTION' });
     }
   };
 
